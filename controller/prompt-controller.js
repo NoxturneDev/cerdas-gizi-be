@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 async function scanImage(req, res) {
-  // const imageBuffer = Buffer.from(req.body.file.content).toString('base64');
+  const imageBuffer = Buffer.from(req.body.file.content).toString('base64');
 
   const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
 
