@@ -3,6 +3,7 @@ const fs = require("fs");
 
 async function scanImage(req, res) {
   const {body} = req;
+  // const imageBuffer = Buffer.from(req.body.file.content).toString('base64');
 
   const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
 
