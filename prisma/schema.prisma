@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id           Int      @id @default(autoincrement())
+  userId       String   @unique @db.Char(36)
+  phoneNumber  String   @unique @map("phone_number") @db.VarChar(40)
+  password     String
+  Parents      Parents?
+  refreshToken String   @map("refresh_token")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
+}
+
+model Parents {
+  id        Int        @id @default(autoincrement())
+  parentId  String     @unique @db.Char(36)
+  name      String
+  user      Users      @relation(fields: [userId], references: [id])
+  userId    Int        @unique
+  Children  Children[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @default(now()) @map("updated_at")
+}
+
+model Children {
+  id         Int      @id @default(autoincrement())
+  childrenId String   @unique @db.Char(36)
+  name       String
+  parent     Parents  @relation(fields: [parentId], references: [id])
+  parentId   Int
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
+}
