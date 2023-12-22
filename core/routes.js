@@ -4,6 +4,7 @@ const router = express.Router();
 const authRouter = require('../app/auth/auth-router');
 const promptRouter = require('../app/prompt/prompt-routes');
 const userRouter = require('../app/user/user-routes');
+const imageRouter = require('../app/image/image-routes');
 const { authentication } = require('../app/services/auth-service');
 // const userController = require('../app/user/user-controller');
 
@@ -16,6 +17,7 @@ router.use('/v1', async (req, res, next) => {
 
 router.use(promptRouter);
 router.use(userRouter);
+router.use(imageRouter);
 
 router.get('/api/check', async (req, res) => res.status(200).json({
   message: 'Server is good to go now, 🚀 berkat ashue fahmi ashue',
