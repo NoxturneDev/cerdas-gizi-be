@@ -1,17 +1,18 @@
 const express = require('express');
 
 const router = express.Router();
+const authRouter = require('../app/auth/auth-router');
 const promptRouter = require('../app/prompt/prompt-routes');
 const userRouter = require('../app/user/user-routes');
 const { authentication } = require('../app/services/auth-service');
-const userController = require('../app/user/user-controller');
+// const userController = require('../app/user/user-controller');
 
 // auth routes
-router.post('/logout', userController.logoutUser);
-router.post('/login', userController.loginUser);
-router.post('/register', userController.registerUser);
 
-router.use('/v1', async (req, res, next) => { await authentication(req, res, next); });
+router.use(authRouter);
+router.use('/v1', async (req, res, next) => {
+  await authentication(req, res, next);
+});
 
 router.use(promptRouter);
 router.use(userRouter);
