@@ -209,5 +209,5 @@ async function passwordChecker(passwordToCheck, correctPassword) {
 }
 
 module.exports = {
-  getAllUsers, getUserById, logoutUser, updateUserInformation, deleteUser, registerNewUser,
+  getAllUsers, getUserById, logoutUser, updateUserInformation, deleteUser, registerNewUser, loginUser,
 };

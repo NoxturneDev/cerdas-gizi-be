@@ -46,7 +46,7 @@ class UserRepository extends BaseRepository {
   // }
 
   async updateUserById(userId, updateData) {
-    const updatedUser = await super.updateDataByUUID({ uuid: userId, column: 'userId', data: updatedata });
+    const updatedUser = await super.updateDataByUUID({ uuid: userId, column: 'userId', data: updateData });
 
     return updatedUser;
   }

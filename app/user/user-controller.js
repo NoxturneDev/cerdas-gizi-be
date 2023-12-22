@@ -111,9 +111,9 @@ async function deleteDataUserById(req, res) {
 
 // USER SERVICES API CONTROLLER
 async function loginUser(req, res) {
-  const { email, password } = req.body;
+  const { phoneNumber, password } = req.body;
 
-  const loginResp = await userService.login({ email, password });
+  const loginResp = await userService.loginUser({ phoneNumber, password });
 
   if (loginResp.error) {
     return res.status(loginResp.error.statusCode).json({
@@ -123,12 +123,12 @@ async function loginUser(req, res) {
     });
   }
 
-  res.cookie('refreshToken', loginResp.refreshToken, {
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000,
-    secure: true,
-    sameSite: 'None',
-  });
+  // res.cookie('refreshToken', loginResp.refreshToken, {
+  //   httpOnly: true,
+  //   maxAge: 24 * 60 * 60 * 1000,
+  //   secure: true,
+  //   sameSite: 'None',
+  // });
 
   return res.status(200).json({
     status: 'success',
@@ -192,6 +192,6 @@ module.exports = {
   logoutUser,
   updateDataUserById,
   deleteDataUserById,
-  deleteAllUserData,
+  // deleteAllUserData,
   loginUser,
 };
