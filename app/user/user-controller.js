@@ -110,7 +110,7 @@ async function deleteDataUserById(req, res) {
 }
 
 // USER SERVICES API CONTROLLER
-async function login(req, res) {
+async function loginUser(req, res) {
   const { email, password } = req.body;
 
   const loginResp = await userService.login({ email, password });
@@ -168,22 +168,22 @@ async function logoutUser(req, res) {
 }
 
 // DEVELOPMENT ONLY API
-async function deleteAllUserData(req, res) {
-  try {
-    await UserFacades.deleteAllData();
-
-    return res.status(200).json({
-      status: 'success',
-      message: 'succesfully delete all user data',
-      users: [],
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: 'failed',
-      message: error.message,
-    });
-  }
-}
+// async function deleteAllUserData(req, res) {
+//   try {
+//     await UserReposity.deleteAllData();
+//
+//     return res.status(200).json({
+//       status: 'success',
+//       message: 'succesfully delete all user data',
+//       users: [],
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       status: 'failed',
+//       message: error.message,
+//     });
+//   }
+// }
 
 module.exports = {
   getAllUsers,
@@ -193,5 +193,5 @@ module.exports = {
   updateDataUserById,
   deleteDataUserById,
   deleteAllUserData,
-  login,
+  loginUser,
 };

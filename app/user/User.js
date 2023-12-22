@@ -8,7 +8,7 @@ const prisma = require('../../prisma/prismaClient');
 
 class UserRepository extends BaseRepository {
   async createNewUser(data) {
-    return super.createData(data);
+    return super.createData({ data });
   }
 
   async getUsers() {
