@@ -15,7 +15,6 @@ const UserRepository = require('./User');
  * @typedef {import('@prisma/client').Prisma.usersCreateInput} UsersCreateInput
  */
 
-
 // ----------------------------------------------------------------------
 // API USER SERVICES
 // ----------------------------------------------------------------------
@@ -78,7 +77,7 @@ async function updateUserInformation(userId, data) {
       throw new ApiError(404, `user with id ${userId} is not found`, true);
     }
 
-    return responseDataMapper(updatedUser, ['userId', 'name','phoneNumber']);
+    return responseDataMapper(updatedUser, ['userId', 'name', 'phoneNumber']);
   } catch (error) {
     console.log(error);
     return { error: { message: error.message, statusCode: error.statusCode || 400 } };
@@ -101,12 +100,26 @@ async function deleteUser(userId) {
   }
 }
 
+async function logoutUser(userId) {
+  try {
+    const userLogout = await UserRepository.getUserById(userId, 'userId');
+
+    if (!userLogout) {
+      throw new ApiError(404, `user with id ${userId} is not found`, true);
+    }
+
+    return responseDataMapper(userLogout, ['userId', 'name']);
+  } catch (error) {
+    console.log(error);
+    return { error: { message: error.message, statusCode: error.statusCode || 400 } };
+  }
+}
+
 // TODO: Logout functionality
 // LOGIN & REGISTER
 async function registerNewUser(data) {
   const { rolesId } = data;
   const filteredReq = filterRequestBody(data, ['rolesId', 'password', 'isTechnician']);
-
   const userId = data.userId !== undefined ? data.userId : uuidv4();
   const createdAt = new Date();
   const updatedAt = createdAt;
@@ -124,15 +137,13 @@ async function registerNewUser(data) {
       createdAt,
       updatedAt,
       password: cryptedPassword,
-      isTechnician: data.isTechnician === 1,
-      roles: { connect: { rolesId } },
     };
 
-    const existingPhoneNumber = await checkExistingPhoneNumber(data.phoneNumber);
+    // const existingPhoneNumber = await checkExistingPhoneNumber(data.phoneNumber);
 
-    if (existingPhoneNumber) {
-      throw new ApiError(400, 'phone number already exist', true);
-    }
+    // if (existingPhoneNumber) {
+    //   throw new ApiError(400, 'phone number already exist', true);
+    // }
 
     const newUser = await UserRepository.createNewUser(newUserData);
 
@@ -157,6 +168,7 @@ async function checkExistingPhoneNumber(phoneNumber) {
 module.exports = {
   getAllUsers,
   getUserById,
+  logoutUser,
   updateUserInformation,
   deleteUser,
   registerNewUser,

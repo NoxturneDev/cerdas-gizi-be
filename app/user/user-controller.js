@@ -138,6 +138,35 @@ async function login(req, res) {
   });
 }
 
+async function logoutUser(req, res) {
+  try {
+    const { userId } = req.body;
+
+    const logoutResult = await userService.logoutUser(userId);
+
+    if (logoutResult.error) {
+      return res.status(logoutResult.error.statusCode).json({
+        status: 'failed logout',
+        message: logoutResult.error.message,
+        users: {},
+      });
+    }
+
+    res.clearCookie('refreshToken');
+    return res.status(200).json({
+      status: 'success',
+      message: 'Success Logout!',
+
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: 'failed',
+      message: error.message,
+    });
+  }
+}
+
 // DEVELOPMENT ONLY API
 async function deleteAllUserData(req, res) {
   try {
@@ -160,6 +189,7 @@ module.exports = {
   getAllUsers,
   getUserById,
   registerUser,
+  logoutUser,
   updateDataUserById,
   deleteDataUserById,
   deleteAllUserData,
