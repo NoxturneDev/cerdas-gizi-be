@@ -1,6 +1,6 @@
 const BaseRepository = require('../base/baseRepository');
 
-const prisma = require('../../prisma/prismaclient');
+const prisma = require('../../prisma/prismaClient');
 
 /**
  * @typedef {import('@prisma/client').prisma.userswhereinput} userwhere
@@ -8,7 +8,7 @@ const prisma = require('../../prisma/prismaclient');
 
 class UserRepository extends BaseRepository {
   async createNewUser(data) {
-    return super.createData(data);
+    return super.createData({ data });
   }
 
   async getUsers() {
@@ -18,19 +18,19 @@ class UserRepository extends BaseRepository {
   }
 
   async getUserById(userId) {
-    const user = await super.getDataByUUID({uuid: userId, column: 'userId'});
+    const user = await super.getDataByUUID({ uuid: userId, column: 'userId' });
 
     return user;
   }
 
   async getUserByPhoneNumber(username) {
-    const usersWithPhoneNumber = await super.getDataByUniqueField({field: 'phoneNumber', value: username});
+    const usersWithPhoneNumber = await super.getDataByUniqueField({ field: 'phoneNumber', value: username });
 
     return usersWithPhoneNumber;
   }
 
   async getUserToken(token) {
-    const user = await super.getDataByColumnName({column: 'refreshtoken', value: token});
+    const user = await super.getDataByColumnName({ column: 'refreshtoken', value: token });
 
     return user;
   }
@@ -46,13 +46,13 @@ class UserRepository extends BaseRepository {
   // }
 
   async updateUserById(userId, updateData) {
-    const updatedUser = await super.updateDataByUUID({uuid: userId, column: 'userId', data: updatedata});
+    const updatedUser = await super.updateDataByUUID({ uuid: userId, column: 'userId', data: updateData });
 
     return updatedUser;
   }
 
   async deleteUserById(userId) {
-    const deletedUser = await super.deleteDataByUUID({uuid: userId, column: 'userId'});
+    const deletedUser = await super.deleteDataByUUID({ uuid: userId, column: 'userId' });
 
     return deletedUser;
   }
@@ -60,12 +60,7 @@ class UserRepository extends BaseRepository {
 
 const model = 'users';
 
-const include = {
-  children: {
-    childrenId: true,
-    name: true,
-  }
-};
+const include = undefined;
 
-const UserRepository = new UserRepository({prisma, include, model});
-module.exports = UserRepository;
+const InitializedUserRepository = new UserRepository({ prisma, include, model });
+module.exports = InitializedUserRepository;
